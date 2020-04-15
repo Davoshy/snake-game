@@ -29,6 +29,20 @@ body {
   top: 200px;
   left: 0;
 }
+
+.new-highscore {
+  visibility: hidden;
+  display: inline-block;
+  position: relative;
+  text-align: left;
+  top: 50px;
+  font-size: 30px;
+  color: red;
+}
+
+.show {
+  visibility: visible;
+}
 .grid {
   display: grid;
   grid-template-columns: repeat(20, 1fr);

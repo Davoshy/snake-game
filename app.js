@@ -1,17 +1,27 @@
 document.addEventListener("DOMContentLoaded", () => {
   const squares = document.querySelectorAll(".grid div");
-  const scoreDisplay = document.querySelector("span");
+  const scoreDisplay = document.querySelector(".score-display");
   const startBtn = document.querySelector(".start");
+  const newHighscore = document.querySelector(".new-highscore");
+  const highscoreDisplay = document.querySelector(".highscore-display");
+
+  //choose difficulty
+  function getSelectedDiff() {
+    let diff = document.getElementById("difficulty");
+    let choosenDiff = diff.options[diff.selectedIndex].value;
+    return choosenDiff;
+  }
 
   const width = 20;
   let currentIndex = 380; //so first div in our grid
   let appleIndex = 212; //so first div in our grid
   let currentSnake = [384, 383, 382, 381, 380]; //starting snake 3divs indexes, 382 = Head
   let direction = 1;
-  let difficulty = 9;
+  let difficulty = 1;
   let score = 0;
   let intervalTime = 0;
   let interval = 0;
+  let highscore = 0;
 
   //setup starting screen
   currentSnake.forEach(index => squares[index].classList.add("snake"));
@@ -19,8 +29,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   //to start, and restart the game
   function startGame() {
+    difficulty = getSelectedDiff();
     currentSnake.forEach(index => squares[index].classList.remove("snake"));
     squares[appleIndex].classList.remove("apple");
+    newHighscore.classList.remove("show");
     clearInterval(interval);
     appleIndex = 212;
     squares[appleIndex].classList.add("apple");
@@ -44,6 +56,14 @@ document.addEventListener("DOMContentLoaded", () => {
       (currentSnake[0] - width < 0 && direction === -width) || //if snake hits the top
       squares[currentSnake[0] + direction].classList.contains("snake") //if snake goes into itself
     ) {
+      let endresult = score * difficulty;
+      if (endresult > highscore) {
+        highscore = endresult;
+        highscoreDisplay.innerText = highscore;
+        newHighscore.classList.add("show");
+      }
+
+      alert(`Game Over! Your Score: ${endresult}`);
       return clearInterval(interval); //this will clear the interval if any of the above happen
     }
 
